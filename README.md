@@ -20,25 +20,28 @@ Tập dữ liệu sử dụng là **WA_Fn-UseC_-HR-Employee-Attrition.csv**, đ�
   - Mã hóa dữ liệu phân loại (Label Encoding)
 
 ### 3.2. Xây dựng mô hình ANN
-Ba mô hình được triển khai:
-- **Model 1**: 2 lớp ẩn (64-32 neuron, ReLU)
-- **Model 2**: 3 lớp ẩn (128-64-32 neuron, ReLU, sâu hơn)
-- **Model 3**: 2 lớp ẩn (64-32 neuron, Tanh)
+Ba mô hình được triển khai, có thêm **Dropout** để giảm overfitting và **Early Stopping** để dừng huấn luyện khi mô hình không còn cải thiện:
+- **Model 1**: 2 lớp ẩn (64-32 neuron, ReLU, Dropout 0.2)
+- **Model 2**: 3 lớp ẩn (128-64-32 neuron, ReLU, Dropout 0.3, sâu hơn)
+- **Model 3**: 2 lớp ẩn (64-64-32-16 neuron, Tanh, Dropout 0.2)
 
-Tất cả mô hình sử dụng `binary_crossentropy` làm hàm mất mát và `Adam` làm optimizer.
+Tất cả mô hình sử dụng:
+- `binary_crossentropy` làm hàm mất mát
+- `Adam` làm optimizer
+- `EarlyStopping` với `patience=5` để ngăn overfitting
 
 ### 3.3. Đánh giá mô hình
 - So sánh **độ chính xác** trên tập kiểm tra.
 - So sánh **hàm mất mát** để kiểm tra khả năng tổng quát hóa của mô hình.
 
 ## 4. Kết quả và Nhận xét
-- **Model 2 (128-64-32 ReLU)** có độ chính xác cao nhất.
-- **Model 3 (Tanh)** không hoạt động tốt bằng ReLU.
-- Mô hình có thể cải thiện bằng cách tuning tham số hoặc thêm dropout để tránh overfitting.
+- **Model 2 (128-64-32 ReLU, Dropout 0.3, EarlyStopping)** có độ chính xác cao nhất.
+- **Model 3 (Tanh, Dropout 0.2)** không hoạt động tốt bằng ReLU.
+- Việc sử dụng Dropout và Early Stopping giúp giảm overfitting, mô hình tổng quát hóa tốt hơn.
 
 ## 5. Hướng phát triển
 - Thử nghiệm thêm các kiến trúc ANN khác.
-- Áp dụng các phương pháp giảm overfitting (dropout, regularization).
+- Áp dụng các phương pháp giảm overfitting (L1/L2 Regularization, Batch Normalization).
 - So sánh với các mô hình máy học khác như Random Forest, XGBoost.
 
 ## 6. Cách chạy chương trình
